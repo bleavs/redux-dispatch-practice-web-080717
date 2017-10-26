@@ -1,12 +1,31 @@
 export let state;
 
 
-export function managePets(){
+export function managePets(state = {pets: []}, action){
+  switch (action.type) {
+    case 'ADD_PET':
+      return {pets : state.pets.concat(action.pet)}
+    case 'REMOVE_PET':
+      return {pets: state.pets.filter(pet => pet.id !== action.id)}
+    default:
+      return state;
+  }
 }
 
-export function dispatch(){
+
+export function dispatch(action){
+  state = managePets(state, action)
+  render()
 }
 
 export function render(){
+  let cont = document.getElementById('container')
+  let list = state.pets.map(pet => {
+    return `<li>${pet.name}</li>`
+    })
+
+  cont.innerHTML = `<ul>${list}</ul>`
 
 }
+
+// dispatch({type: '@@INIT'})
